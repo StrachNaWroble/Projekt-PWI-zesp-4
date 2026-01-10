@@ -39,10 +39,10 @@ void cube::D() {
 }
 
 void cube::R() {
-    co[2] = (co[2]+2)%3;
-    co[3] = (co[3]+1)%3;
-    co[6] = (co[6]+1)%3;
-    co[7] = (co[7]+2)%3;
+    co[cp[2]] = (co[cp[2]]+2)%3;
+    co[cp[3]] = (co[cp[3]]+1)%3;
+    co[cp[6]] = (co[cp[6]]+1)%3;
+    co[cp[7]] = (co[cp[7]]+2)%3;
 
     int swp = cp[3];
     cp[3] = cp[7];
@@ -59,10 +59,10 @@ void cube::R() {
 }
 
 void cube::L() {
-    co[0] = (co[0]+2)%3;
-    co[1] = (co[1]+1)%3;
-    co[4] = (co[4]+1)%3;
-    co[5] = (co[5]+2)%3;
+    co[cp[0]] = (co[cp[0]]+2)%3;
+    co[cp[1]] = (co[cp[1]]+1)%3;
+    co[cp[4]] = (co[cp[4]]+1)%3;
+    co[cp[5]] = (co[cp[5]]+2)%3;
 
     int swp = cp[0];
     cp[0] = cp[1];
@@ -79,10 +79,15 @@ void cube::L() {
 }
 
 void cube::F() {
-    co[0] = (co[0]+1)%3;
-    co[3] = (co[3]+2)%3;
-    co[4] = (co[4]+2)%3;
-    co[7] = (co[7]+1)%3;
+    co[cp[0]] = (co[cp[0]]+1)%3;
+    co[cp[3]] = (co[cp[3]]+2)%3;
+    co[cp[4]] = (co[cp[4]]+2)%3;
+    co[cp[7]] = (co[cp[7]]+1)%3;
+
+    eo[ep[0]] ^= 1;
+    eo[ep[8]] ^= 1;
+    eo[ep[4]] ^= 1;
+    eo[ep[7]] ^= 1;
 
     int swp = cp[0];
     cp[0] = cp[4];
@@ -95,18 +100,18 @@ void cube::F() {
     ep[4] = ep[8];
     ep[8] = ep[7];
     ep[7] = swp;
-
-    eo[0] ^= 1;
-    eo[8] ^= 1;
-    eo[4] ^= 1;
-    eo[7] ^= 1;
 }
 
 void cube::B() {
-    co[1] = (co[1]+2)%3;
-    co[2] = (co[2]+1)%3;
-    co[5] = (co[5]+1)%3;
-    co[6] = (co[6]+2)%3;
+    co[cp[1]] = (co[cp[1]]+2)%3;
+    co[cp[2]] = (co[cp[2]]+1)%3;
+    co[cp[5]] = (co[cp[5]]+1)%3;
+    co[cp[6]] = (co[cp[6]]+2)%3;
+
+    eo[ep[2]] ^= 1;
+    eo[ep[6]] ^= 1;
+    eo[ep[10]] ^= 1;
+    eo[ep[5]] ^= 1;
 
     int swp = cp[1];
     cp[1] = cp[2];
@@ -120,10 +125,6 @@ void cube::B() {
     ep[10] = ep[5];
     ep[5] = swp;
 
-    eo[2] ^= 1;
-    eo[6] ^= 1;
-    eo[10] ^= 1;
-    eo[5] ^= 1;
 }
 void cube::print()
 {

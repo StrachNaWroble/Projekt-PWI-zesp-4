@@ -11,12 +11,12 @@ public:
 	//kostka jest reprezentowana wzgledem orientacji: niebieski center z przodu, biały center u góry, pomarańczowy center z prawej
 	cube();
 	
-	R();
-	L();
-	U();
-	D();
-	B();
-	F();
+	void R();
+	void L();
+	void U();
+	void D();
+	void B();
+	void F();
 
 	void move(int id);
 };

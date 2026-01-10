@@ -15,7 +15,8 @@ Oraz przy 1) i 3) aspoekcie: możliwość wypisywania (i wczytywania) na standar
 Zespół 4, opiekun Piotr Ostropolski-Nalewaja, skład: 
 359949 359409 351683 361008 360678 331060 [Python i C++]
 
-# Planowana struktura repozytorium
+### Planowana struktura repozytorium
+```text
 /Projekt-PWI-zesp-4
 │
 ├── README.md               # Instrukcja uruchomienia, autorzy, opis (P3)
@@ -39,4 +40,4 @@ Zespół 4, opiekun Piotr Ostropolski-Nalewaja, skład:
 │   └── cli_handler.py      # (P3) Obsługa konsoli
 │
 └── /docs                   # Dokumentacja projektowa
-    └── format_pliku.md     # KRYTYCZNE: Opis jak wyglądają pliki .txt
+    └── format_pliku.md     # KRYTYCZNE: Opis formatu plików .txt

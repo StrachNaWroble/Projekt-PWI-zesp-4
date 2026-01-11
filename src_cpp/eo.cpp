@@ -1,7 +1,6 @@
 #include "cube.h"
 #include "eo.h"
-int eo[4096];
-void EO_load_table()
+EO::EO()
 {
 	ifstream data("eo.txt");
 	if(!data)
@@ -11,7 +10,7 @@ void EO_load_table()
 	}
 	for(int i=0;i<4096;i++) data>>eo[i];
 }
-int EO(cube& state)
+int EO::get_eo(cube& state)
 {	
 	auto to_int = [&](cube& obj)
 	{

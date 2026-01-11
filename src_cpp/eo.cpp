@@ -9,7 +9,7 @@ void EO_load_table()
 		cout<<"Dane heurystyki eo nie zostały wygenerowane!\n";
 		return;
 	}
-	for(int i=0;i<4096;i++) cin>>eo[i];
+	for(int i=0;i<4096;i++) data>>eo[i];
 }
 int EO(cube& state)
 {	

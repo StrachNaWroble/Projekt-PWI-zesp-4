@@ -25,7 +25,7 @@ int main()
 		if(opt[to_int(akt)] == inf)
 			cnt++;
 		opt[to_int(akt)] = min(dist, opt[to_int(akt)]);
-		if(cnt == all_states) break;
+		if(cnt == all_states/2) break;
 		visited[akt.ep] = 1;
 		for(auto& v : moves)
 		{

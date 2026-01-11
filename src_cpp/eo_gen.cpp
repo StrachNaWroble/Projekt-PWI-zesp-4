@@ -12,17 +12,19 @@ int main()
 			res += obj.eo[i]*(1<<i);
 		return res;
 	};
-	vector<int> opt((1<<14), 1e9);
+	const int all_states = 4096;
+	const int inf = 1e9;
+	vector<int> opt(all_states, inf);
 	map<array<int, 12>, int> visited;
 	int cnt = 0;
 	while(!q.empty())
 	{
-		cnt++;
-		if(cnt%100) debug(cnt);
-		if(cnt > 10000000) break;
 		auto [akt, dist] = q.front();
 		q.pop();
+		if(opt[to_int(akt)] == inf)
+			cnt++;
 		opt[to_int(akt)] = min(dist, opt[to_int(akt)]);
+		if(cnt == all_states) break;
 		visited[akt.ep] = 1;
 		for(int i=0;i<MOVES;i++)
 		{
@@ -32,21 +34,6 @@ int main()
 				q.push(make_pair(nxt, dist+1));
 		}
 	}
-	for(int i=0;i<opt.size();i++)
+	for(int i=0;i<all_states;i++)
 		cout<<opt[i]<<"\n";
-	for(int i=0;i<=4096;i++)
-	{
-		if(opt[i] == 1e9)
-		{
-			int s = 0;
-			for(int j=0;j<20;j++) 
-				if(i & (1<<j))
-					s++;
-			if(s%2 == 0)
-			{
-				cout<<":( "<<i;
-				return 0;
-			}
-		}
-	}
 }

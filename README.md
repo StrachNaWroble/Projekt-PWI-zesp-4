@@ -21,6 +21,7 @@ Zespół 4, opiekun Piotr Ostropolski-Nalewaja, skład:
 │
 ├── README.md               # Instrukcja uruchomienia, autorzy, opis (P3)
 ├── .gitignore              # Ignorowanie plików .o, .exe, __pycache__, .txt (P3)
+├── Doxyfile                # Plik tworzący dokumentację
 │
 ├── /data                   # Folder wymiany danych
 │   ├── .gitkeep            # Żeby git widział pusty folder
@@ -34,10 +35,19 @@ Zespół 4, opiekun Piotr Ostropolski-Nalewaja, skład:
 │   └── Heuristics.cpp / .h # (C3) Optymalizacja
 │
 ├── /src_py                 # Kod źródłowy Python
-│   ├── main.py             # (P3) Główny skrypt sterujący (menu, timeout)
+│   ├── main.py             # (P3) Główny skrypt sterujący (menu)
 │   ├── input_gui.py        # (P1) Okno wprowadzania
 │   ├── vis_gui.py          # (P2) Okno wizualizacji
 │   └── cli_handler.py      # (P3) Obsługa konsoli
 │
 └── /docs                   # Dokumentacja projektowa
     └── format_pliku.md     # KRYTYCZNE: Opis formatu plików .txt
+
+## Dokumentacja (Doxygen)
+
+Projekt wykorzystuje narzędzie **Doxygen** do automatycznego generowania dokumentacji dla kodu C++ oraz Python. Pliki dokumentacji (HTML/LaTeX) nie są przechowywane w repozytorium (są ignorowane przez `.gitignore`). Po pobraniu repozytorium należy je wygenerować lokalnie.
+  ```bash
+  sudo apt install doxygen
+A nastepnie wygenerować
+  ```bash
+  doxygen Doxyfile

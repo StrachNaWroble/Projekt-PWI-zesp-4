@@ -2,18 +2,26 @@
 #include "cube.h"
 #include "debug.h"
 #include "eoh.h"
+#include "eph.h"
+#include "cph.h"
 using namespace std;
 typedef long long LL;
 
-#define inf 1000
+#define inf 1000000000
 
-string moves[20]={
+string moves[20] = {
 "U", "Up", "U2", 
 "D", "Dp", "D2", 
 "R", "Rp", "R2", 
 "L", "Lp", "L2", 
 "F", "Fp", "F2", 
 "B", "Bp", "B2"
+};
+
+string moves_phase2[] = {
+    "U","Up","U2",
+    "D","Dp","D2",
+    "R2","L2","F2","B2"
 };
 
 eoh EOH;
@@ -80,8 +88,8 @@ int search(vector <cube> &path, int price, int bound, int stage){
 	if(stage==1 and is_goal_phase1(node)) return -1;  // znaleziono rozwiązanie
 	if(stage==2 and is_goal_phase2(node)) return -1;
 	
-	int mint = inf;
-	for (int i = 0; i < 18; i++){
+	int mint = inf, move_count = (stage == 1 ? 18 : 10);
+	for (int i = 0; i < move_count; i++){
 		cube newcube=node;
 		
 		newcube.move(moves[i]);

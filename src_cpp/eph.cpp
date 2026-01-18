@@ -15,5 +15,5 @@ eph::eph()
 int eph::get_eph(cube& state)
 {
 	vector<int> ep(state.ep.begin(), state.ep.end());
-	return _cph[lehmer_code(ep)];	
+	return _eph[lehmer_code(ep)];	
 }

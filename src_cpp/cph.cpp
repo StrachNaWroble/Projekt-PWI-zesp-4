@@ -14,5 +14,6 @@ cph::cph()
 }
 int cph::get_cph(cube& state)
 {
-	return _cph[lehmer_code(state.cp)];	
+	vector<int> cp(state.cp.begin(), state.cp.end());
+	return _cph[lehmer_code(cp)];	
 }

@@ -7,7 +7,7 @@ int main()
 	vector<string> moves = {"U", "D", "R2", "L2", "F2", "B2"};
 	queue<pair<cube, int> > q;
 	q.push(make_pair(state, 0));
-	unordered_map<int, int> distance;
+	vector<int> distance(479001600, -1);
 	while(!q.empty())
 	{
 		auto [akt, dist] = q.front();
@@ -18,15 +18,15 @@ int main()
 		{
 			cube nw = akt;
 			nw.move(v);
-			vector<int> ep(nw.ep.begin(),nw.ep.end());
-			if(distance.find(lehmer_code(ep)) == distance.end())
+			vector<int> ep(nw.ep.begin(), nw.ep.end());
+			if(distance[lehmer_code(ep)] == -1)
 			{
 				distance[lehmer_code(ep)] = dist+1;
 				q.push(make_pair(nw, dist+1));
 			}
 		}
 	}
-	for(auto& [key, val] : distance)
-		cout<<key<<" "<<val<<"\n";
+	for(int i=0;i<479001600;i++)
+		cout<<distance[i]<<"\n";
 }
 

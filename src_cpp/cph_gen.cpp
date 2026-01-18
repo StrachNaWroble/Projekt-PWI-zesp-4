@@ -12,14 +12,14 @@ int main()
 	{
 		auto [akt, dist] = q.front();
 		q.pop();
-		distance[lehmer_code(akt)] = dist;
+		distance[lehmer_code(akt.cp)] = dist;
 		for(auto& v : moves)
 		{
 			cube nw = akt;
 			nw.move(v);
-			if(distance[lehmer_code(nw)] == -1)
+			if(distance[lehmer_code(nw.cp)] == -1)
 			{
-				distance[lehmer_code(nw)] = dist+1;
+				distance[lehmer_code(nw.cp)] = dist+1;
 				q.push(make_pair(nw, dist+1));
 			}
 		}

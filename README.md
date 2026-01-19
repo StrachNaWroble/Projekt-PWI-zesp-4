@@ -11,6 +11,20 @@ Użytkownik wprowadza stan początkowy kostki na interaktywnej planszy. Program 
 
 Oraz przy 1) i 3) aspoekcie: możliwość wypisywania (i wczytywania) na standardowe wyjście
 
+
+## Dokumentacja (Doxygen)
+
+Projekt wykorzystuje narzędzie **Doxygen** do automatycznego generowania dokumentacji dla kodu C++ oraz Python. Pliki dokumentacji (HTML/LaTeX) nie są przechowywane w repozytorium (są ignorowane przez `.gitignore`). Po pobraniu repozytorium należy pobrać Doxygen:
+  ```bash
+  sudo apt install doxygen
+  ```
+A nastepnie wygenerować pliki:
+  ```bash
+  doxygen Doxyfile
+  ```
+Dokumentacja powinna wtedy znaleźć się w pliku html/index.html oraz latex/refman.tex
+
+
 # Dane zespołu
 Zespół 4, opiekun Piotr Ostropolski-Nalewaja, skład: 
 359949 359409 351683 361008 360678 331060 [Python i C++]
@@ -21,6 +35,7 @@ Zespół 4, opiekun Piotr Ostropolski-Nalewaja, skład:
 │
 ├── README.md               # Instrukcja uruchomienia, autorzy, opis (P3)
 ├── .gitignore              # Ignorowanie plików .o, .exe, __pycache__, .txt (P3)
+├── Doxyfile                # Plik tworzący dokumentację
 │
 ├── /data                   # Folder wymiany danych
 │   ├── .gitkeep            # Żeby git widział pusty folder
@@ -34,10 +49,11 @@ Zespół 4, opiekun Piotr Ostropolski-Nalewaja, skład:
 │   └── Heuristics.cpp / .h # (C3) Optymalizacja
 │
 ├── /src_py                 # Kod źródłowy Python
-│   ├── main.py             # (P3) Główny skrypt sterujący (menu, timeout)
+│   ├── main.py             # (P3) Główny skrypt sterujący (menu)
 │   ├── input_gui.py        # (P1) Okno wprowadzania
 │   ├── vis_gui.py          # (P2) Okno wizualizacji
 │   └── cli_handler.py      # (P3) Obsługa konsoli
 │
 └── /docs                   # Dokumentacja projektowa
     └── format_pliku.md     # KRYTYCZNE: Opis formatu plików .txt
+```

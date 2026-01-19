@@ -3,7 +3,7 @@
 #include "lehmer_code.h"
 eph::eph()
 {
-	ifstream file("eph.txt");
+	ifstream file("../data/eph.txt");
 	if(!file) 
 	{
 		cerr<<"Nie wygenerowane danych cph!\n";

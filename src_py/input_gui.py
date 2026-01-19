@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 
 COLORS = {
     'white':  '#FFFFFF',
@@ -9,6 +10,7 @@ COLORS = {
     'orange': '#FFA500',
     'grey':   '#D3D3D3'
 }
+HEX_TO_NAME = {v: k for k, v in COLORS.items()}
 
 
 class InputGUI:
@@ -18,10 +20,16 @@ class InputGUI:
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(1, weight=1)
         self.current_color = 'white'
+        self.tiles = {}
         self.create_palette()
         self.grid_frame = tk.Frame(self.root, bg="#eeeeee", padx=25, pady=25)
         self.grid_frame.grid(row=1, column=0, sticky="nsew")
         self.create_grid()
+        save_button = tk.Button(self.root, text="ZAPISZ", 
+                             bg="#4CAF50", fg="white",
+                             font=("Arial", 12, "bold"),
+                             command=self.verify_and_save)
+        save_button.grid(row=2, column=0, pady=20, sticky="ew", padx=50)
         
     def create_palette(self):
         palette_frame = tk.Frame(self.root, pady=10, bg="#dddddd")
@@ -36,7 +44,6 @@ class InputGUI:
             
     def set_brush(self, color):
         self.current_color = color
-        print(f"Wybrano kolor: {color}")
 
     def create_grid(self):
         for col in range(12):
@@ -55,23 +62,77 @@ class InputGUI:
             self.create_face(face_name, offset_x, offset_y)
 
     def create_face(self, face_name, offset_x, offset_y):
+        center_colors = {
+            'U': 'white',
+            'D': 'yellow',
+            'F': 'blue',
+            'B': 'green',
+            'R': 'orange',
+            'L': 'red'
+        }
         for r in range(3):
             for c in range(3):
                 text_on_button = ""
+                color_bg = COLORS['grey']
                 if r == 1 and c == 1:
                     text_on_button = face_name
+                    color_bg = COLORS[center_colors[face_name]]
                 button = tk.Button(self.grid_frame, 
-                                bg=COLORS['grey'],
+                                bg=color_bg,
                                 text=text_on_button,
                                 borderwidth=1,
                                 relief="solid",
                                 font=("Arial", 15, "bold"))
                 button.config(command=lambda b=button: self.paint_tile(b))
                 button.grid(row=offset_y + r, column=offset_x + c, sticky="nsew", padx=1, pady=1)
+                self.tiles[(face_name, r, c)] = button
                 
     def paint_tile(self, button_widget):
         color_hex = COLORS[self.current_color]
         button_widget.configure(bg=color_hex)
+        
+    def verify_and_save(self):
+        color_counts = {name: 0 for name in COLORS if name != 'grey'}
+        result = {}
+        for (face_name, r, c), button in self.tiles.items():
+            bg_color_hex = button.cget('bg')
+            color_name = HEX_TO_NAME[bg_color_hex]
+            if color_name == 'grey':
+                messagebox.showerror("Błąd", "Kostka nie jest w pełni pomalowana!\nUzupełnij szare pola.")
+                return
+            color_counts[color_name] += 1
+            result[(face_name, r, c)] = color_name
+        for color, count in color_counts.items():
+            if count != 9:
+                messagebox.showerror("Błąd", f"Niepoprawna liczba kolorów!\n\nKolor {color.upper()} występuje {count} razy.\n(Powinien występować dokładnie 9 razy).")
+                return
+        messagebox.showinfo("Sukces", "Kostka jest poprawna! Zapisuję dane.")
+        self.save_to_file(result)
+
+    def save_to_file(self, data):
+        colors = {
+            'white': 'W',
+            'yellow': 'Y',
+            'green': 'G',
+            'blue': 'B',
+            'red': 'R',
+            'orange': 'O'
+        }
+        face_order = ['U', 'D', 'F', 'B', 'L', 'R']
+        try:
+            with open("cube_input.txt", "w") as f:
+                for face in face_order:
+                    f.write(f"{face}: ")
+                    for r in range(3):
+                        row_colors = []
+                        for c in range(3):
+                            name = data[(face, r, c)]
+                            letter = colors[name]
+                            row_colors.append(letter)
+                        line = " ".join(row_colors)
+                        f.write(line + "\n")
+        except Exception as e:
+            messagebox.showerror("Błąd zapisu", f"Błąd: {e}")
 
 
 if __name__ == "__main__":

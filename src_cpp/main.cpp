@@ -9,8 +9,9 @@ int main(int argc, char* argv[])
 
 		return 0;
 	}
-	if(argc == 2 && argv[1] == "--moves")
+	if(argc == 2 && strcmp(argv[1], "--moves") == 0)
 	{
+		debug(argc);
 		#ifndef DEBUG
 		cout<<"Podaj liczbę ruchów: ";
 		#endif
@@ -35,8 +36,8 @@ int main(int argc, char* argv[])
 		cout<<"Zakończono fazę pierwszą\n";
 		cout<<"Ruchy fazy pierwszej: \n";
 		#endif
-		for(auto& v : solving_seq.first)
-			v.print();
+		for(auto& v : solving_seq)
+			cout<<v<<" ";
 		#ifndef DEBUG 
 		cout<<"Rozpoczynanie fazy drugiej\n";
 		#endif
@@ -45,11 +46,11 @@ int main(int argc, char* argv[])
 		cout<<"Zakończenie fazy drugiej\n";
 		cout<<"Ruchy fazy drugiej: \n";
 		#endif	
-		for(auto& v : solving_seq.first)
-			v.print();
+		for(auto& v : solving_seq)
+			cout<<v<<" ";
 		return 0;
 	}
-	if(argc == 2 && argv[2] == "--state")
+	if(argc == 2 && strcmp(argv[1], "--state") == 0)
 	{
 		
 		return 0;

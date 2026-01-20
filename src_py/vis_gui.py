@@ -165,7 +165,7 @@ def update(frame):
         ax.set_title(f"Obraz {idx+1}")
     return []
 
-moves = load_data("test2.txt")  
+moves = load_data("test.txt")  
 # odczytywanie kolejnych stanów kostki
 
 

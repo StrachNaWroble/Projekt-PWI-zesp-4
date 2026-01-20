@@ -117,5 +117,6 @@ vector<string> ida_star(cube root, int stage){
 		if(t == -1) return seq;
 		if(t >= inf) return seq;
 		bound = t;
+		debug(bound);
 	}
 }

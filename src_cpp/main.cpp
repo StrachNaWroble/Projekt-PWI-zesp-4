@@ -11,7 +11,6 @@ int main(int argc, char* argv[])
 	}
 	if(argc == 2 && strcmp(argv[1], "--moves") == 0)
 	{
-		debug(argc);
 		#ifndef DEBUG
 		cout<<"Podaj liczbę ruchów: ";
 		#endif
@@ -37,7 +36,7 @@ int main(int argc, char* argv[])
 		cout<<"Ruchy fazy pierwszej: \n";
 		#endif
 		for(auto& v : solving_seq)
-			cout<<v<<" ";
+			state.move(v), cout<<v<<" ";
 		#ifndef DEBUG 
 		cout<<"Rozpoczynanie fazy drugiej\n";
 		#endif

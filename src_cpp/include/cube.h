@@ -4,10 +4,10 @@ using namespace std;
 class cube
 {
 public:
-	array<int, 8> cp; //permutacja rogow
-	array<int, 8> co; //orientacja rogow
-	array<int, 12> ep; //permutacja krawedzi
-	array<int, 12> eo; //orientacja krawedzi
+	array<uint8_t, 8> cp; //permutacja rogow
+	array<uint8_t, 8> co; //orientacja rogow
+	array<uint8_t, 12> ep; //permutacja krawedzi
+	array<uint8_t, 12> eo; //orientacja krawedzi
 	//kostka jest reprezentowana wzgledem orientacji: niebieski center z przodu, biały center u góry, pomarańczowy center z prawej
 	cube();
 	

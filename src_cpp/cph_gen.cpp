@@ -4,7 +4,7 @@
 int main()
 {
 	cube state;
-	vector<string> moves = {"U", "D", "R2", "L2", "F2", "B2"};
+	vector<string> moves = {"U", "Up", "U2", "Dp", "D2", "D", "R2", "L2", "F2", "B2"};
 	queue<pair<cube, int> > q;
 	q.push(make_pair(state, 0));
 	vector<int> distance(40320, -1);

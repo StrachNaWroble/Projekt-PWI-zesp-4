@@ -15,7 +15,7 @@ int main()
 	const int all_states = 4096;
 	const int inf = 1e9;
 	vector<int> opt(all_states, inf);
-	map<array<int, 12>, int> visited;
+	map<array<uint8_t, 12>, int> visited;
 	int cnt = 0;
 	vector<string> moves = {"U", "D", "R", "L", "F", "B"};
 	while(!q.empty())

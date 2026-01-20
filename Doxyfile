@@ -898,6 +898,14 @@ FILE_PATTERNS          = *.c \
                          *.cxx \
                          *.cpp \
                          *.c++ \
+                         *.h \
+                         *.hh \
+                         *.hxx \
+                         *.hpp \
+                         *.h++ \
+                         *.py \
+                         *.md
+
                          *.java \
                          *.ii \
                          *.ixx \

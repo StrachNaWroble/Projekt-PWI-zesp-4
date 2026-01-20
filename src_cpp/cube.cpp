@@ -1,3 +1,7 @@
+/** @file cube.cpp
+ *  @brief Implementacja klasy cube.
+ *  @details Zawiera metody do manipulacji stanem kostki (obroty).
+ */
 #include<bits/stdc++.h>
 #include "cube.h"
 #include "debug.h"

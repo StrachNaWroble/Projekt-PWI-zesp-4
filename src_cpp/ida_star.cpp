@@ -1,3 +1,7 @@
+/** @file ida_star.cpp
+ *  @brief Implementacja algorytmu IDA*.
+ *  @details Zawiera logikę przeszukiwania przestrzeni stanów w celu znalezienia rozwiązania.
+ */
 #include <bits/stdc++.h>
 #include "cube.h"
 #include "debug.h"

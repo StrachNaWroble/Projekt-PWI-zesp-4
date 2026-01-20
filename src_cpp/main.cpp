@@ -1,3 +1,7 @@
+/** @file main.cpp
+ *  @brief Plik główny programu solvera.
+ *  @details Obsługuje argumenty wiersza poleceń i steruje procesem rozwiązywania.
+ */
 #include "debug.h"
 #include "cube.h"
 #include "ida_star.h"

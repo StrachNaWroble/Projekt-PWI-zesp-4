@@ -6,8 +6,9 @@
 #include "cph.h"
 using namespace std;
 #define inf 1000000000
+vector<string> moves;
 
-string moves[20] = {
+vector<string> moves_phase1 = {
 "U",// "Up", "U2", 
 "D",// "Dp", "D2", 
 "R",// "Rp", "R2", 
@@ -16,9 +17,9 @@ string moves[20] = {
 "B",// "Bp", "B2"
 };
 
-string moves_phase2[] = {
-    "U",//"Up","U2",
-    "D",//"Dp","D2",
+vector<string> moves_phase2 = {
+    "U", "Up","U2",
+    "D", "Dp","D2",
     "R2","L2","F2","B2"
 };
 
@@ -31,13 +32,13 @@ bool is_goal_phase2(cube& c) {
     // sprawdzamy narożniki
     for (int i = 0; i < 8; i++) {
         if (c.cp[i] != i) return false; // narożnik na złym miejscu
-        if (c.co[i] != 0) return false; // złe ustawienie narożnika
+//        if (c.co[i] != 0) return false; // złe ustawienie narożnika
     }
 
     // sprawdzamy krawędzie
     for (int i = 0; i < 12; i++) {
         if (c.ep[i] != i) return false; // krawędź na złym miejscu
-        if (c.eo[i] != 0) return false; // złe ustawienie krawędzi
+//        if (c.eo[i] != 0) return false; // złe ustawienie krawędzi
     }
 
     return true; // wszystko poprawnie
@@ -84,15 +85,12 @@ int search(vector<string>& seq, cube node, int price, int bound, int stage){
 	if(stage==2 and is_goal_phase2(node)) return -1;
 	
 	int mint = inf, move_count = 6;
+	if(stage == 2) move_count = 10;
 	for (int i = 0; i < move_count; i++){
-	
+		if(!seq.empty() && seq.back()[0] == moves[i][0]) continue;
 		cube newcube=node;
 		seq.push_back(moves[i]);
 		newcube.move(moves[i]);
-		
-//		if (find(path.begin(), path.end(), newcube) != path.end()) 
-//  		continue; // sprawdzenie czy stan nie był już odwiedzony
-    	
 		int t = search(seq, newcube, price+1, bound, stage);
 		if(t == -1) return t;
 		mint = min(mint, t);
@@ -105,8 +103,12 @@ int search(vector<string>& seq, cube node, int price, int bound, int stage){
 }
 
 vector<string> ida_star(cube root, int stage){
-	
-	
+	if(stage == 1)
+		moves = moves_phase1;
+	else
+		moves = moves_phase2;
+	if(stage == 2)
+		assert(is_goal_phase1(root) == 1);
 	int bound=getheuristic(root, stage); //ustawienie początkowego zakresu przeszukiwania
 	
 	vector<string> seq;	
@@ -115,6 +117,5 @@ vector<string> ida_star(cube root, int stage){
 		if(t == -1) return seq;
 		if(t >= inf) return seq;
 		bound = t;
-		debug(bound);
 	}
 }

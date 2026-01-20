@@ -161,11 +161,11 @@ def update(frame):
         ax.set_proj_type('ortho')
         elevs = [30, 30, -30, -30]
         azims = [-60, -120, 60, 120]
-        ax.view_init(elev=elevs[idx], azim=azims[idx] + frame*3)
+        ax.view_init(elev=elevs[idx], azim=azims[idx])
         ax.set_title(f"Obraz {idx+1}")
     return []
 
-moves = load_data("test.txt")  
+moves = load_data("test2.txt")  
 # odczytywanie kolejnych stanów kostki
 
 

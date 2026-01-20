@@ -5,7 +5,6 @@
 
 import sys
 from pathlib import Path
-#dodać zimoprtowane z drugiego pliku python metody weryfikacji poprawnosci kostki
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
@@ -31,10 +30,16 @@ class SolverCLI:
     # @param face Oznaczenie ścianki (np. 'U').
     # @param stickers Ciąg 9 znaków kolorów.
     # @return Sformatowany ciąg dla jednej ścianki.
-    def _format_face_string(self, face, stickers):
-        # Rozdziela znaki spacjami: "WW..." -> "W W ..."
-        spaced_colors = " ".join(list(stickers))
-        return f"{face}: {spaced_colors}"
+    def _format_face_string(self, face, stickers):        
+        rows = [stickers[i:i+3] for i in range(0, 9, 3)]
+        formatted_rows = [" ".join(list(row)) for row in rows]
+        
+        # Pierwsza linia zawiera prefix "X: "
+        result = f"{face}: {formatted_rows[0]}\n\n"
+        result += f"{formatted_rows[1]}\n\n"
+        result += f"{formatted_rows[2]}"
+        
+        return result
 
     ##
     # @brief Interaktywnie pobiera stan kostki od użytkownika.
@@ -43,33 +48,64 @@ class SolverCLI:
     def get_user_input(self):
         print("\n=== WPROWADZANIE STANU KOSTKI ===\n")
         print("Dozwolone kolory: B - Blue, G - Green, O - Orange, R - Red, W - White, Y - Yellow")
-        print("Ścianki w kolejności: U (up - góra), D (down - dół), F (front - przód), B (back - tył), L (left - lewo), R (right - prawo)")
-        print("Wpisuj ciągi po 9 znaków (np. WWWWWWWWW) dla każdej ścianki.\n")
         
-
-        formatted_parts = []
-
+        # Mapowanie ścianka -> (Nazwa koloru, Oczekiwany kolor środka, Instrukcja perspektywy)
+        face_info = {
+            'U': ("White (Biała)", 'W', "Górna krawędź to krawędź z Niebieską (F)"),
+            'D': ("Yellow (Żółta)", 'Y', "Górna krawędź to krawędź z Niebieską (F)"),
+            'F': ("Blue (Niebieska)", 'B', "Górna krawędź to krawędź z Białą (U)"),
+            'B': ("Green (Zielona)", 'G', "Górna krawędź to krawędź z Białą (U)"),
+            'L': ("Red (Czerwona)", 'R', "Górna krawędź to krawędź z Białą (U)"),
+            'R': ("Orange (Pomarańczowa)", 'O', "Górna krawędź to krawędź z Białą (U)")
+        }
+        
         try:
-            for face in FACES_ORDER:
-                while True:
-                    raw_input = input(f"Ścianka {face}: ").strip().upper()
+            while True:
+                formatted_parts = []
+                all_stickers = ""
+                
+                for face in FACES_ORDER:
+                    color_name, expected_center, orientation_desc = face_info.get(face, ("Unknown", None, "Brak instrukcji"))
                     
-                    # Walidacja 1: Długość
-                    if len(raw_input) != 9:
-                        print(f"Błąd: Wymagane dokładnie 9 znaków. Wpisano {len(raw_input)}.")
-                        continue
+                    print(f"\nŚcianka {face} [{color_name}]")
+                    print(f"Perspektywa: {orientation_desc}")
                     
-                    # Walidacja 2: Poprawność znaków
-                    invalid_chars = set(raw_input) - VALID_COLORS
-                    if invalid_chars:
-                        print(f"Błąd: Niedozwolone znaki: {invalid_chars}")
-                        continue
-                    
-                    formatted_parts.append(self._format_face_string(face, raw_input))
-                    break
-            
-            full_cube_state = " ".join(formatted_parts)
-            return full_cube_state
+                    while True:
+                        raw_input = input(f"Wpisz 9 znaków dla ścianki {face}: ").strip().upper()
+                        
+                        # Walidacja 1: Długość
+                        if len(raw_input) != 9:
+                            print(f"Błąd: Wymagane dokładnie 9 znaków. Wpisano {len(raw_input)}.")
+                            continue
+                        
+                        # Walidacja 2: Poprawność znaków
+                        invalid_chars = set(raw_input) - VALID_COLORS
+                        if invalid_chars:
+                            print(f"Błąd: Niedozwolone znaki: {invalid_chars}")
+                            continue
+                        
+                        # Walidacja 3: Sprawdzenie środka
+                        if raw_input[4] != expected_center:
+                            print(f"Błąd: Środkowy element (znak nr 5) musi być koloru {color_name} ({expected_center}).")
+                            continue
+                        
+                        formatted_parts.append(self._format_face_string(face, raw_input))
+                        all_stickers += raw_input
+                        break
+                
+                # Walidacja 4: Liczba kolorów
+                counts = {c: all_stickers.count(c) for c in VALID_COLORS}
+                incorrect_counts = {c: count for c, count in counts.items() if count != 9}
+                
+                if incorrect_counts:
+                    print("\nBŁĄD: Niepoprawna liczba kolorów na kostce!")
+                    print("Każdy kolor powinien wystąpić dokładnie 9 razy.")
+                    print(f"Znaleziono: {counts}")
+                    print("Proszę wprowadzić stan kostki ponownie.\n")
+                    continue
+                
+                full_cube_state = "\n\n".join(formatted_parts)
+                return full_cube_state
 
         except KeyboardInterrupt:
             sys.exit(0)

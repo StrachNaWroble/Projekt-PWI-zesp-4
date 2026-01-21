@@ -21,6 +21,7 @@ Projekt wykorzystuje narzędzie **Doxygen** do automatycznego generowania dokume
 A nastepnie wygenerować pliki:
   ```bash
   doxygen Doxyfile
+  cd documentation/latex && make
   ```
 Dokumentacja powinna wtedy znaleźć się w pliku html/index.html oraz latex/refman.tex
 

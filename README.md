@@ -35,6 +35,7 @@ python3 main.py
 
 ## 4. Generowanie Testów
 W katalogu `src_cpp` znajduje się narzędzie do generowania trudniejszych, poprawnych stanów kostki.
+(Wcześniej należy skąpilować cały projekt)
 
 Kompilacja i uruchomienie generatora:
 ```bash

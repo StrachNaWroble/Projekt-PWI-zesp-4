@@ -21,7 +21,7 @@ echo Rozpoczęcie generowania tablicy eoh:
 echo Rozpoczęcie generowania tablicy cph:
 ./cph_gen >../data/cph.txt
 
-rm *.o
+#rm *.o
 rm cph_gen
 rm eph_gen
 rm eoh_gen

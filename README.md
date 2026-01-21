@@ -79,6 +79,7 @@ Zespół 4, opiekun Piotr Ostropolski-Nalewaja, skład:
 ├── setup.sh                # Skrypt instalacyjny (kompilacja C++ i generowanie heurystyk)
 ├── README.md               # Dokumentacja projektu
 ├── Doxyfile                # Konfiguracja Doxygen
+├── Refman.pdf              # Dokumentacja  
 │
 ├── /data                   # Folder wymiany danych (pliki tymczasowe)
 │   ├── cube_state.txt      # Stan kostki (Wejście dla C++)

@@ -14,29 +14,30 @@ typedef long long LL;
 
 /// Stała reprezentująca „nieskończoność” używaną w IDA*
 #define inf 1000000000
+vector<string> moves;
 
 /**
  * @brief Lista wszystkich dozwolonych ruchów w fazie 1 algorytmu.
  *
  * Zawiera pełny zestaw obrotów ścian (90°, -90°, 180°).
  */
-string moves1[20] = {
-    "U", "Up", "U2",
-    "D", "Dp", "D2",
-    "R", "Rp", "R2",
-    "L", "Lp", "L2",
-    "F", "Fp", "F2",
-    "B", "Bp", "B2"
+vector<string> moves_phase1 = {
+"U", 
+"D", 
+"R", 
+"L", 
+"F", 
+"B",
 };
 
 /**
- * @brief Lista dozwolonych ruchów w fazie 2 algorytmu.
- *
- */
-string moves2[10] = {
-    "U", "Up", "U2",
-    "D", "Dp", "D2",
-    "R2", "L2", "F2", "B2"
+* @brief Lista dozwolonych ruchów w fazie 2 algorytmu.
+*
+*/
+vector<string> moves_phase2 = {
+    "U", "Up","U2",
+    "D", "Dp","D2",
+    "R2","L2","F2","B2"
 };
 
 /// Heurystyka orientacji krawędzi (Edge Orientation Heuristic)
@@ -120,45 +121,30 @@ int getheuristic(cube &node, int stage){
  *
  * @return Najmniejszy przekroczony koszt lub -1 jeśli znaleziono rozwiązanie
  */
-int search(cube node, vector <string> &move_path, int price, int bound, int stage){
+int search(vector<string>& seq, cube node, int price, int bound, int stage){
 
-    int f = price + getheuristic(node, stage);
-
-    /// Przekroczenie aktualnego limitu
-    if(f > bound) return f;
-
-    /// Sprawdzenie warunku końcowego
-    if(stage==1 and is_goal_phase1(node)) return -1;
-    if(stage==2 and is_goal_phase2(node)) return -1;
-
-    int mint = inf;
-    int move_count = (stage == 1 ? 18 : 10);
-
-    /// Iteracja po dozwolonych ruchach
-    for (int i = 0; i < move_count; i++){
-
-        cube newcube = node;
-        string new_move = (stage == 1 ? moves1[i] : moves2[i]);
-
-        /// Eliminacja powtarzających się ruchów tej samej ściany
-        if (!move_path.empty()) {
-            if (new_move[0] == move_path.back()[0])
-                continue;
-        }
-
-        /// Wykonanie ruchu
-        newcube.move(new_move);
-        move_path.push_back(new_move);
-
-        int t = search(newcube, move_path, price+1, bound, stage);
-
-        if(t == -1) return t;
-
-        mint = min(mint, t);
-        move_path.pop_back();
-    }
-
-    return mint;
+	int f = price + getheuristic(node, stage);
+	
+	if(f > bound) return f;  // przekroczylony zakres przeszukiwania
+	if(stage==1 and is_goal_phase1(node)) return -1;  // znaleziono rozwiązanie
+	if(stage==2 and is_goal_phase2(node)) return -1;
+	
+	int mint = inf, move_count = 6;
+	if(stage == 2) move_count = 10;
+	for (int i = 0; i < move_count; i++){
+		if(!seq.empty() && seq.back()[0] == moves[i][0]) continue;
+		cube newcube=node;
+		seq.push_back(moves[i]);
+		newcube.move(moves[i]);
+		int t = search(seq, newcube, price+1, bound, stage);
+		if(t == -1) return t;
+		mint = min(mint, t);
+		
+		seq.pop_back();
+	
+	}
+	return mint;
+	
 }
 
 /**
@@ -168,20 +154,22 @@ int search(cube node, vector <string> &move_path, int price, int bound, int stag
  * @param stage Faza algorytmu (1 lub 2)
  * @return Para: (lista ruchów, głębokość rozwiązania)
  */
-pair<vector<string>, int> ida_star(cube root, int stage){
-
-    /// Początkowy limit oparty o heurystykę
-    int bound = getheuristic(root, stage);
-
-    vector <string> move_path;
-
-    while(true){
-        int t = search(root, move_path, 0, bound, stage);
-
-        if(t == -1) return {move_path, bound};
-        if(t >= inf) return {move_path, -1};
-
-        bound = t;
-    }
+vector<string> ida_star(cube root, int stage){
+	if(stage == 1)
+		moves = moves_phase1;
+	else
+		moves = moves_phase2;
+	if(stage == 2)
+		assert(is_goal_phase1(root) == 1);
+	int bound=getheuristic(root, stage); //ustawienie początkowego zakresu przeszukiwania
+	
+	vector<string> seq;	
+	while(true){
+		int t = search(seq, root, 0, bound, stage); 
+		if(t == -1) return seq;
+		if(t >= inf) return seq;
+		bound = t;
+		debug(bound);
+	}
 }
 

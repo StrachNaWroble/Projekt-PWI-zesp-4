@@ -12,6 +12,11 @@ using namespace std;
 #define inf 1000000000
 vector<string> moves;
 
+/**
+ * @brief Lista wszystkich dozwolonych ruchów w fazie 1 algorytmu.
+ *
+ * Zawiera pełny zestaw obrotów ścian (90°, -90°, 180°).
+ */
 vector<string> moves_phase1 = {
 "U", 
 "D", 
@@ -21,6 +26,10 @@ vector<string> moves_phase1 = {
 "B",
 };
 
+/**
+* @brief Lista dozwolonych ruchów w fazie 2 algorytmu.
+*
+*/
 vector<string> moves_phase2 = {
     "U", "Up","U2",
     "D", "Dp","D2",
@@ -31,6 +40,10 @@ eoh EOH;
 cph CPH;
 eph EPH;
 
+/**
+ * @brief Sprawdza, czy kostka jest rozwiązana w fazie 2.
+ *
+ */
 bool is_goal_phase2(cube& c) {
 
     // sprawdzamy narożniki
@@ -48,6 +61,10 @@ bool is_goal_phase2(cube& c) {
     return true; // wszystko poprawnie
 }
 
+/**
+ * @brief Sprawdza, czy kostka spełnia warunki końcowe fazy 1.
+ *
+ */
 bool is_goal_phase1(cube& c) {
     // orientacja narożników
     for (int i = 0; i < 8; i++) {
@@ -75,11 +92,21 @@ bool is_goal_phase1(cube& c) {
     return true;
 }
 
+/**
+ * @brief Oblicza wartość heurystyki dla danego stanu kostki.
+ *
+ */
 int getheuristic(cube &node, int stage){
 
 	if(stage==1) return EOH.get_eoh(node); // gdy faza 1
 	return max(CPH.get_cph(node), EPH.get_eph(node)); // gdy faza 2
 }
+
+/**
+ * @brief Rekurencyjna funkcja przeszukiwania IDA*.
+ *
+ * @return Najmniejszy przekroczony koszt lub -1 jeśli znaleziono rozwiązanie
+ */
 int search(vector<string>& seq, cube node, int price, int bound, int stage){
 
 	int f = price + getheuristic(node, stage);
@@ -106,6 +133,13 @@ int search(vector<string>& seq, cube node, int price, int bound, int stage){
 	
 }
 
+/**
+ * @brief Implementacja algorytmu IDA* dla danej fazy.
+ *
+ * @param root Stan początkowy kostki
+ * @param stage Faza algorytmu (1 lub 2)
+ * @return Para: (lista ruchów, głębokość rozwiązania)
+ */
 vector<string> ida_star(cube root, int stage){
 	if(stage == 1)
 		moves = moves_phase1;

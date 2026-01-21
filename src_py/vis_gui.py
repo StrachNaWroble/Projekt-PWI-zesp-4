@@ -42,7 +42,7 @@ def load_data(filename):
         cube={} 
         # tworzenie slownika w ktorym sa listy  np dla sciany 'U' trzymamy odwzorowanie jej 3x3  
 
-        for wall in ['U', 'D', 'F', 'B', 'L', 'R']:
+        for wall in ['U', 'D', 'F', 'B', 'R', 'L']:
             cube[wall]=[] 
             cube[wall].append(lines[i][2:].strip().split())
             i+=1
@@ -63,35 +63,51 @@ def load_data(filename):
 # @param    Słownik opisujący aktualny stan kostki
 # @return   Lista krotek (x, y, z, colours), gdzie colours oznacza słownik kolorów ścian
 def build_cube(cube_state):
+    """
+    Buduje listę 27 cubies zgodnie z wizją opisaną przez C++:
+      - U (biała) = z == 2, D (żółta) = z == 0, F (niebieska) = y == 2
+      - Dla ścian poza U/D ich 'górna' krawędź to krawędź z U (czyli widoczne rzędy są mapowane wg z)
+      - Dla U i D ich 'górna' krawędź to krawędź z F (czyli widoczne rzędy są mapowane wg y)
+    Zwraca listę krotek (x,y,z, colours), gdzie colours to słownik {face_letter: color_letter}.
+    """
     cube = []
-    # U: z=2, D: z=0, F: y=2, B:y=0, L:x=0, R:x=2
-    for xi in range(3):
-        for yi in range(3):
-            for zi in range(3):
+    # współrzędne:
+    # x: 0 (L) .. 2 (R)
+    # y: 0 (B) .. 2 (F)
+    # z: 0 (D) .. 2 (U)
+
+    for x in range(3):
+        for y in range(3):
+            for z in range(3):
                 colours = {}
-                # okreslamy kolory widocznych scian 
 
-                if zi == 2 and 'U' in cube_state:
-                    colours['U'] = cube_state['U'][yi][xi]
+                # Górna i dolna: chcemy, żeby ich "górna" krawędź była krawędzią do frontu (F).
+                # Dlatego wiersz w cube_state['U']/['D'] odpowiada 2 - y (y=2 -> pierwsza linia)
+                if z == 2 and 'U' in cube_state:
+                    colours['U'] = cube_state['U'][2 - y][x]
+                if z == 0 and 'D' in cube_state:
+                    colours['D'] = cube_state['D'][2 - y][2 - x]
 
-                if zi == 0 and 'D' in cube_state:
-                    colours['D'] = cube_state['D'][yi][xi]
+                # Ściany boczne (F, B, L, R): ich "górna" krawędź to krawędź do U,
+                # więc rząd odpowiada 2 - z (z=2 -> pierwsza linia)
+                if y == 2 and 'F' in cube_state:
+                    # F: kolumny zgodne z x (lewo->prawo = x=0..2)
+                    colours['F'] = cube_state['F'][2 - z][2 - x]
 
-                if yi == 2 and 'F' in cube_state:
-                    colours['F'] = cube_state['F'][zi][xi]
+                if y == 0 and 'B' in cube_state:
+                    # B: potrzebne odbicie poziome względem x (bo to tylnia  ściana)
+                    colours['B'] = cube_state['B'][2 - z][x]
 
-                if yi == 0 and 'B' in cube_state:
-                    colours['B'] = cube_state['B'][zi][xi]
+                if x == 0 and 'L' in cube_state:
+                    # L: lewa ściana, kolumny odpowiadają y, ale orientacja wymaga odbicia
+                    colours['L'] = cube_state['L'][2 - z][2 - y]
 
-                if xi == 0 and 'L' in cube_state:
-                    colours['L'] = cube_state['L'][zi][yi]
+                if x == 2 and 'R' in cube_state:
+                    # R: prawa ściana, kolumny odpowiadają y bez odbicia
+                    colours['R'] = cube_state['R'][2 - z][y]
 
-                if xi == 2 and 'R' in cube_state:
-                    colours['R'] = cube_state['R'][zi][yi]
-
-                cube.append((xi, yi, zi, colours))
+                cube.append((x, y, z, colours))
     return cube
-
 
 ##
 # @brief    Rysuje pojedynczy element kostki Rubika w przestrzeni 3D.

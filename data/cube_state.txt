@@ -1,35 +1,35 @@
-U: W W W
+U: Y R R
 
-W W W
+W W G
 
-W W W
+O O G
 
-D: Y Y Y
+D: R B B
 
-Y Y Y
+R Y O
 
-Y Y Y
+G G W
 
-F: B B B
+F: W B O
 
-B B B
+W B O
 
-B B B
+G Y Y
 
-B: G G G
+B: W W R
 
-G G G
+G G R
 
-G G G
+B O Y
 
-L: R R R
+L: W R B
 
-R R R
+W R B
 
-R R R
+O Y Y
 
-R: O O O
+R: B G G
 
-O O O
+B O Y
 
-O O O
+R Y O

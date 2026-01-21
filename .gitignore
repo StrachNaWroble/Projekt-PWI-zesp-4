@@ -1,15 +1,26 @@
-```gitignore
-# C++ binaries
-*.exe
-*.o
-*.out
-/bin/
-
-# Python cache
+# Python
 __pycache__/
-*.py[cod]
+*.pyc
 
-# Doxygen documentation output
-documentation/html/
+# C++ Binaries and Objects
+src_cpp/main
+src_cpp/*.o
+src_cpp/gen_test_case
+src_cpp/cph_gen
+src_cpp/eph_gen
+src_cpp/eoh_gen
+gen_test_case
+
+# Generated Data / Heuristics (Large files)
+data/cph.txt
+data/eoh.txt
+data/eph.txt
+data/solution_steps.txt
+
+# Visualization
+wizualizacja_kostki.gif
+test.txt
+
+# Documentation
 documentation/latex/
-*.log
+documentation/html/

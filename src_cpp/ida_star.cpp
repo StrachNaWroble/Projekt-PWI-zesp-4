@@ -13,12 +13,12 @@ using namespace std;
 vector<string> moves;
 
 vector<string> moves_phase1 = {
-"U",// "Up", "U2", 
-"D",// "Dp", "D2", 
-"R",// "Rp", "R2", 
-"L",// "Lp", "L2", 
-"F",// "Fp", "F2", 
-"B",// "Bp", "B2"
+"U", 
+"D", 
+"R", 
+"L", 
+"F", 
+"B",
 };
 
 vector<string> moves_phase2 = {

@@ -12,7 +12,10 @@ int main(int argc, char* argv[])
 	{
 		cerr<<"Wczytano heurystyki"<<endl;
 		cube state;
-		state.read();
+		if (!state.read()) {
+            cerr << "Błąd: Wczytanie stanu kostki nie powiodło się (nieprawidłowy układ kostki?)" << endl;
+            return 1;
+        }
 		cerr<<"Udane wczytanie stanu kostki"<<endl;
 		auto seq = ida_star(state, 1);
 		for(auto& v : seq)

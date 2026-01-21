@@ -191,7 +191,7 @@ void cube::print()
 
 	//Dokładna orientacja ścianki będzie zależeć specyfikacji programu wizualizującego w pythonie
 }
-void cube::read()
+bool cube::read()
 {
 	vector<pair<char, char> > edges = {
 		{'W', 'B'}, {'W', 'R'}, {'W', 'G'}, {'W', 'O'},
@@ -220,7 +220,7 @@ void cube::read()
 	debug(letters); 
 	if (letters.size() < 54) {
 		// niepoprawne/niepełne wejście -> nie zmieniamy stanu
-		return;
+		return false;
 	}
 
 	// struktury do przechowania "odczytanych" kolorów w kolejności odpowiadającej print()
@@ -303,14 +303,14 @@ void cube::read()
 		}
 		return false;
 	};
-	if (!dfsCorner(0)) return;
+	if (!dfsCorner(0)) return false;
 
 	// 4) możliwości dla edge'ów
 	vector<vector<pair<int,int>>> possEdge(12);
 	for (int pos=0; pos<12; ++pos) {
 		auto a = printedEdge[pos][0];
 		auto b = printedEdge[pos][1];
-		if (a.first == -1 || b.first == -1) return;
+		if (a.first == -1 || b.first == -1) return false;
 		for (int e=0;e<12;++e) {
 			for (int o=0;o<2;++o) {
 				char expect1 = ( (a.first ^ o) ? edges[e].second : edges[e].first );
@@ -339,13 +339,15 @@ void cube::read()
 		}
 		return false;
 	};
-	if (!dfsEdge(0)) return;
+	if (!dfsEdge(0)) return false;
 
 	// 5) przypisz odtworzone tablice do stanu kostki
 	for (int i=0;i<8;i++) cp[i] = new_cp[i];
 	for (int i=0;i<8;i++) co[i] = new_co[i];
 	for (int i=0;i<12;i++) ep[i] = new_ep[i];
 	for (int i=0;i<12;i++) eo[i] = new_eo[i];
+	
+	return true;
 }
 void cube::move(string id) {
     if(id=="U") U();

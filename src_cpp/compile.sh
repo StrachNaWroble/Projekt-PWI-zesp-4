@@ -1,3 +1,4 @@
+#!/bin/bash
 echo kompilacja lehmer_code.cpp:
 g++ -Iinclude -O3 lehmer_code.cpp -c
 echo kompilacja eph.cpp

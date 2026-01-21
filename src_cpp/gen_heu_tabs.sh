@@ -1,3 +1,4 @@
+#!/bin/bash
 echo Rozpoczęcie kompilacji: 
 g++ -Iinclude cube.cpp -c 
 g++ -Iinclude lehmer_code.cpp -c 

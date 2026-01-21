@@ -181,8 +181,11 @@ axes=[
 
 # Utworzenie animacji na podstawie kolejnych stanów kostki
 
-ani = FuncAnimation(fig, update, frames=len(moves), interval=100)
+ani = FuncAnimation(fig, update, frames=len(moves), interval=1000)
 
 # zapisywanie animacji do pliku wizualizacja_kostki.gif
 
-ani.save("wizualizacja_kostki.gif", writer="pillow", fps=2)
+ani.save("wizualizacja_kostki.gif", writer="pillow", fps=1)
+
+# Wyświetlenie okna z animacją
+plt.show()
